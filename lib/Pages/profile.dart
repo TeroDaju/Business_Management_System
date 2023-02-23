@@ -1,4 +1,3 @@
-import 'package:businessmanagementsystem/Pages/editProfile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 
@@ -19,7 +18,7 @@ class _ProfileState extends State<Profile> {
       child: Scaffold(
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: const Color(0xFF00BEF0),
+          backgroundColor: const Color.fromARGB(255, 136, 231, 255),
         ),
         body: Column(
           children: [
@@ -30,7 +29,7 @@ class _ProfileState extends State<Profile> {
                 ClipPath(
                   clipper: OvalBottomBorderClipper(),
                   child: Container(
-                    color: const Color(0xFF00BEF0),
+                    color: const Color.fromARGB(255, 136, 231, 255),
                     height: 150,
                   ),
                 ),
@@ -49,41 +48,41 @@ class _ProfileState extends State<Profile> {
            Details(title: 'Username', value: widget.username),
            Details(title: 'Email', value: widget.email),
            Details(title: 'Phone Number', value: widget.phone.toString()),
-           const SizedBox(
-            height: 30,
-           ),
-           ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(builder: (BuildContext goToLogin) 
-                              {
-                          return const EditProfile();
-                              }),
-                        );
-                      },
-                      style: ButtonStyle(
-                        minimumSize:
-                            MaterialStateProperty.all<Size>(const Size(150, 50)),
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                          const Color(0xFF00BEF0),
-                        ),
-                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                        ),
-                      ),
-                      child: const Text(
-                        'Edit Profile',
-                        style: TextStyle(
-                          color: Color.fromARGB(255, 255, 255, 255),
-                          fontSize: 20,
-                          fontFamily: 'OpenSans',
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 0,
-                        ),
-                      ),
-                    ),
+          //  const SizedBox(
+          //   height: 30,
+          //  ),
+          //  ElevatedButton(
+          //             onPressed: () {
+          //               Navigator.of(context).push(
+          //                 MaterialPageRoute(builder: (BuildContext goToLogin) 
+          //                     {
+          //                 return const EditProfile();
+          //                     }),
+          //               );
+          //             },
+          //             style: ButtonStyle(
+          //               minimumSize:
+          //                   MaterialStateProperty.all<Size>(const Size(150, 50)),
+          //               backgroundColor: MaterialStateProperty.all<Color>(
+          //                 const Color(0xFF00BEF0),
+          //               ),
+          //               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          //                 RoundedRectangleBorder(
+          //                   borderRadius: BorderRadius.circular(30),
+          //                 ),
+          //               ),
+          //             ),
+          //             child: const Text(
+          //               'Edit Profile',
+          //               style: TextStyle(
+          //                 color: Color.fromARGB(255, 255, 255, 255),
+          //                 fontSize: 20,
+          //                 fontFamily: 'OpenSans',
+          //                 fontWeight: FontWeight.bold,
+          //                 letterSpacing: 0,
+          //               ),
+          //             ),
+          //           ),
           ],
         ),
       ),
