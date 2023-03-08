@@ -67,7 +67,7 @@ class _ManageRevenueState extends State<ManageRevenue> {
                           ],
                         ),
                       child: const Text(
-                          "Financial Standing \nTerotauko",
+                          "Financial Standing \n Amount",
                           textAlign: TextAlign.center,
                           style: TextStyle(
                           color: Color(0xFF00AFEE),

@@ -1,5 +1,5 @@
-import 'package:businessmanagementsystem/Pages/manage_employees.dart';
-import 'package:businessmanagementsystem/Pages/manage_revenue.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class RecordProfit extends StatefulWidget {
@@ -11,7 +11,70 @@ class RecordProfit extends StatefulWidget {
 
 class _RecordProfitState extends State<RecordProfit> {
   List<String> items = ['Sales', 'Sponsors', 'Assets', 'Others'];
-  String? selectedItem = 'Sales';
+  String? type = 'Sales';
+
+  //text controllers
+  final _titleController = TextEditingController();
+  final _amountController = TextEditingController();
+  final _remarksController = TextEditingController();
+
+  Future recordProfit() async {
+    final User user = FirebaseAuth.instance.currentUser!;
+    final uid = user.uid;
+
+    // add user details
+    addProfitDetails(
+            _titleController.text.trim(),
+            int.parse(_amountController.text.trim()),
+            _remarksController.text.trim(),
+            type!,
+            uid)
+        .then((value) {
+      Navigator.of(context).pop();
+    });
+  }
+
+  Future addProfitDetails(
+      String title, int amount, String remarks, String type, String uid) async {
+    final User user = FirebaseAuth.instance.currentUser!;
+    final uid = user.uid;
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .collection('profits')
+        .add({
+      'title': title,
+      'amount': amount,
+      'remarks': remarks,
+      'type': type,
+      'uid': uid,
+    }).then((value) => addAllDetails(title, amount, remarks, type));
+  }
+
+  Future addAllDetails(
+      String title, int amount, String remarks, String type) async {
+    final User user = FirebaseAuth.instance.currentUser!;
+    final uid = user.uid;
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .collection('all')
+        .add({
+      'title': title,
+      'amount': amount,
+      'remarks': remarks,
+      'type': type,
+      'which': true,
+    });
+  }
+
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _amountController.dispose();
+    _remarksController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,12 +139,14 @@ class _RecordProfitState extends State<RecordProfit> {
                       ),
                     ),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 25, vertical: 12),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 25, vertical: 12),
                     child: SizedBox(
                       height: 40,
                       child: TextField(
-                        decoration: InputDecoration(
+                        controller: _titleController,
+                        decoration: const InputDecoration(
                           filled: true,
                           fillColor: Colors.white,
                           contentPadding: EdgeInsets.symmetric(
@@ -117,12 +182,14 @@ class _RecordProfitState extends State<RecordProfit> {
                       ),
                     ),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 25, vertical: 12),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 25, vertical: 12),
                     child: SizedBox(
                       height: 40,
                       child: TextField(
-                        decoration: InputDecoration(
+                        controller: _amountController,
+                        decoration: const InputDecoration(
                           filled: true,
                           fillColor: Colors.white,
                           contentPadding: EdgeInsets.symmetric(
@@ -158,12 +225,14 @@ class _RecordProfitState extends State<RecordProfit> {
                       ),
                     ),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 25, vertical: 12),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 25, vertical: 12),
                     child: SizedBox(
                       height: 40,
                       child: TextField(
-                        decoration: InputDecoration(
+                        controller: _remarksController,
+                        decoration: const InputDecoration(
                           filled: true,
                           fillColor: Colors.white,
                           contentPadding: EdgeInsets.symmetric(
@@ -182,11 +251,11 @@ class _RecordProfitState extends State<RecordProfit> {
                       ),
                     ),
                   ),
-                   Container(
+                  Container(
                     height: 5,
                   ),
                   Container(
-                    height: 65,
+                    height: 57,
                     padding:
                         const EdgeInsets.symmetric(horizontal: 30, vertical: 0),
                     child: DropdownButtonFormField<String>(
@@ -206,7 +275,7 @@ class _RecordProfitState extends State<RecordProfit> {
                           borderSide: BorderSide(color: Colors.white),
                         ),
                       ),
-                      value: selectedItem,
+                      value: type,
                       items: items
                           .map((item) => DropdownMenuItem<String>(
                               value: item,
@@ -214,7 +283,7 @@ class _RecordProfitState extends State<RecordProfit> {
                                 item,
                               )))
                           .toList(),
-                      onChanged: (item) => setState(() => selectedItem = item),
+                      onChanged: (item) => setState(() => type = item),
                     ),
                   ),
                   Container(
@@ -224,37 +293,31 @@ class _RecordProfitState extends State<RecordProfit> {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 80, vertical: 0),
                     child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.of(context).push(
-                            MaterialPageRoute(builder: (BuildContext goToLogin) 
-                                {
-                            return const ManageRevenue();
-                                }),
-                              );
-                            },
-                          style: ButtonStyle(
-                            minimumSize:
-                                MaterialStateProperty.all<Size>(const Size(150, 50)),
-                            backgroundColor: MaterialStateProperty.all<Color>(
-                              const Color(0xFF00BEF0),
-                            ),
-                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30),
-                              ),
-                            ),
-                          ),
-                          child: const Text(
-                            'Register',
-                            style: TextStyle(
-                              color: Color.fromARGB(255, 255, 255, 255),
-                              fontSize: 20,
-                              fontFamily: 'OpenSans',
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 0,
-                            ),
+                      onPressed: recordProfit,
+                      style: ButtonStyle(
+                        minimumSize: MaterialStateProperty.all<Size>(
+                            const Size(150, 50)),
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                          const Color(0xFF00BEF0),
+                        ),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
                           ),
                         ),
+                      ),
+                      child: const Text(
+                        'Enter',
+                        style: TextStyle(
+                          color: Color.fromARGB(255, 255, 255, 255),
+                          fontSize: 20,
+                          fontFamily: 'OpenSans',
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 0,
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),
