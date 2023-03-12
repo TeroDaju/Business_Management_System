@@ -1,83 +1,80 @@
-import 'package:businessmanagementsystem/Pages/manage_revenue.dart';
+import 'package:businessmanagementsystem/Pages/manage_employees.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class RecordProfit extends StatefulWidget {
-  const RecordProfit({super.key});
+class AddEmployee extends StatefulWidget {
+  const AddEmployee({super.key});
 
   @override
-  State<RecordProfit> createState() => _RecordProfitState();
+  State<AddEmployee> createState() => _AddEmployeeState();
 }
 
-class _RecordProfitState extends State<RecordProfit> {
-  List<String> items = ['Sales', 'Sponsors', 'Assets', 'Others'];
-  String? type = 'Sales';
-
-  //text controllers
-  final _titleController = TextEditingController();
-  final _amountController = TextEditingController();
-  final _remarksController = TextEditingController();
-
-  Future recordProfit() async {
+class _AddEmployeeState extends State<AddEmployee> {
+  final _nameController = TextEditingController();
+  final _postController = TextEditingController();
+  final _addressController = TextEditingController();
+  final _phoneController = TextEditingController();
+  
+Future recordProfit() async {
     final User user = FirebaseAuth.instance.currentUser!;
     final uid = user.uid;
 
     // add user details
     addProfitDetails(
-            _titleController.text.trim(),
-            int.parse(_amountController.text.trim()),
-            _remarksController.text.trim(),
-            type!,
+            _nameController.text.trim(),
+            _postController.text.trim(),
+            _addressController.text.trim(),
+            int.parse(_phoneController.text.trim()),
             uid)
         .then((value) {
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => const ManageRevenue(),
+            builder: (context) => const ManageEmployees(),
           ));
     });
   }
 
   Future addProfitDetails(
-      String title, int amount, String remarks, String type, String uid) async {
+      String name, String post, String address, int phone, String uid) async {
     final User user = FirebaseAuth.instance.currentUser!;
     final uid = user.uid;
     await FirebaseFirestore.instance
         .collection('users')
         .doc(uid)
-        .collection('profits')
+        .collection('employees')
         .add({
-      'title': title,
-      'amount': amount,
-      'remarks': remarks,
-      'type': type,
+      'name': name,
+      'post': post,
+      'address': address,
+      'phone': phone,
       'uid': uid,
-    }).then((value) => addAllDetails(title, amount, remarks, type));
+    }).then((value) => addAllDetails(name, post, address, phone));
   }
 
   Future addAllDetails(
-      String title, int amount, String remarks, String type) async {
+      String name, String post, String address, int phone) async {
     final User user = FirebaseAuth.instance.currentUser!;
     final uid = user.uid;
     await FirebaseFirestore.instance
         .collection('users')
         .doc(uid)
-        .collection('all')
+        .collection('allEmp')
         .add({
-      'title': title,
-      'amount': amount,
-      'remarks': remarks,
-      'type': type,
-      'which': true,
+      'name': name,
+      'post': post,
+      'address': address,
+      'phone': phone,
     });
   }
 
   @override
   void dispose() {
-    _titleController.dispose();
-    _amountController.dispose();
-    _remarksController.dispose();
+    _nameController.dispose();
+    _postController.dispose();
+    _addressController.dispose();
+    _phoneController.dispose();
     super.dispose();
   }
 
@@ -88,7 +85,7 @@ class _RecordProfitState extends State<RecordProfit> {
       appBar: AppBar(
         centerTitle: true,
         title: const Text(
-          "Record Profits",
+          "Add Employee",
           style: TextStyle(
             fontSize: 25,
             fontFamily: 'OpenSans',
@@ -106,7 +103,7 @@ class _RecordProfitState extends State<RecordProfit> {
               height: 200,
               decoration: const BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage("images/recordProfits.png"),
+                  image: AssetImage("images/addEmployee.png"),
                 ),
               ),
             ),
@@ -133,7 +130,7 @@ class _RecordProfitState extends State<RecordProfit> {
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 26),
                     child: Text(
-                      "Title:",
+                      "Name:",
                       textAlign: TextAlign.left,
                       style: TextStyle(
                         color: Color.fromARGB(255, 0, 0, 0),
@@ -150,7 +147,7 @@ class _RecordProfitState extends State<RecordProfit> {
                     child: SizedBox(
                       height: 40,
                       child: TextField(
-                        controller: _titleController,
+                        controller: _nameController,
                         decoration: const InputDecoration(
                           filled: true,
                           fillColor: Colors.white,
@@ -176,7 +173,7 @@ class _RecordProfitState extends State<RecordProfit> {
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 26),
                     child: Text(
-                      "Amount:",
+                      "Post:",
                       textAlign: TextAlign.left,
                       style: TextStyle(
                         color: Color.fromARGB(255, 0, 0, 0),
@@ -193,7 +190,7 @@ class _RecordProfitState extends State<RecordProfit> {
                     child: SizedBox(
                       height: 40,
                       child: TextField(
-                        controller: _amountController,
+                        controller: _postController,
                         decoration: const InputDecoration(
                           filled: true,
                           fillColor: Colors.white,
@@ -219,7 +216,7 @@ class _RecordProfitState extends State<RecordProfit> {
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 26),
                     child: Text(
-                      "Remarks:",
+                      "Address:",
                       textAlign: TextAlign.left,
                       style: TextStyle(
                         color: Color.fromARGB(255, 0, 0, 0),
@@ -236,7 +233,7 @@ class _RecordProfitState extends State<RecordProfit> {
                     child: SizedBox(
                       height: 40,
                       child: TextField(
-                        controller: _remarksController,
+                        controller: _addressController,
                         decoration: const InputDecoration(
                           filled: true,
                           fillColor: Colors.white,
@@ -259,36 +256,44 @@ class _RecordProfitState extends State<RecordProfit> {
                   Container(
                     height: 5,
                   ),
-                  Container(
-                    height: 57,
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 30, vertical: 0),
-                    child: DropdownButtonFormField<String>(
-                      style: const TextStyle(
-                        fontSize: 14,
-                        color: Colors.black,
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 26),
+                    child: Text(
+                      "Phone Number:",
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        color: Color.fromARGB(255, 0, 0, 0),
+                        fontSize: 20,
+                        fontFamily: 'OpenSans',
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 0,
                       ),
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.white,
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(color: Colors.white),
-                        ),
-                        focusedBorder: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(12)),
-                          borderSide: BorderSide(color: Colors.white),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 25, vertical: 12),
+                    child: SizedBox(
+                      height: 40,
+                      child: TextField(
+                        controller: _phoneController,
+                        decoration: const InputDecoration(
+                          filled: true,
+                          fillColor: Colors.white,
+                          contentPadding: EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 10),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(100)),
+                            borderSide: BorderSide(color: Colors.white),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(100)),
+                            borderSide: BorderSide(color: Colors.white),
+                          ),
                         ),
                       ),
-                      value: type,
-                      items: items
-                          .map((item) => DropdownMenuItem<String>(
-                              value: item,
-                              child: Text(
-                                item,
-                              )))
-                          .toList(),
-                      onChanged: (item) => setState(() => type = item),
                     ),
                   ),
                   Container(

@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import 'manage_revenue.dart';
+
 class RecordExpenses extends StatefulWidget {
   const RecordExpenses({super.key});
 
@@ -37,7 +39,11 @@ class _RecordExpensesState extends State<RecordExpenses> {
             type!,
             uid)
         .then((value) {
-      Navigator.of(context).pop();
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const ManageRevenue(),
+          ));
     });
   }
 
