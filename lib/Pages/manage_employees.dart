@@ -1,6 +1,7 @@
 import 'package:businessmanagementsystem/Pages/add_employee.dart';
 import 'package:businessmanagementsystem/Pages/edit_employee.dart';
-import 'package:businessmanagementsystem/Pages/remove_employee.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ManageEmployees extends StatefulWidget {
@@ -11,6 +12,30 @@ class ManageEmployees extends StatefulWidget {
 }
 
 class _ManageEmployeesState extends State<ManageEmployees> {
+  int _employeeCount = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadEmployeeCount();
+  }
+
+  Future<void> _loadEmployeeCount() async {
+    try {
+      final snapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .collection('employees')
+          .get();
+
+      setState(() {
+        _employeeCount = snapshot.size;
+      });
+    } catch (e) {
+      print('Error loading employee count: $e');
+    }
+  }
+  
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -72,8 +97,8 @@ class _ManageEmployeesState extends State<ManageEmployees> {
                     ],
                   ),
                   child: Column(
-                    children: const [
-                      Text(
+                    children: [
+                      const Text(
                         "No. of Employees",
                         textAlign: TextAlign.center,
                         style: TextStyle(
@@ -83,15 +108,39 @@ class _ManageEmployeesState extends State<ManageEmployees> {
                           fontWeight: FontWeight.bold,
                           letterSpacing: 0,
                         ),
+                      ),Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10,left:40),
+                            child: Image.asset(
+                              "images/manageEmployees.png",
+                              width: 30,
+                              height: 30,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10,left:15),
+                            child: Text(
+                              "$_employeeCount",
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                fontSize: 20,
+                                fontFamily: 'OpenSans',
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 0,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
                 ),
                 const SizedBox(
-                  height: 25,
+                  height: 40,
                 ),
                 SizedBox(
-                  width: 250.0,
+                  width: 270.0,
                   height: 60.0,
                   child: ElevatedButton(
                     onPressed: () {
@@ -139,61 +188,10 @@ class _ManageEmployeesState extends State<ManageEmployees> {
                   ),
                 ),
                 const SizedBox(
-                  height: 25,
+                  height: 40,
                 ),
                 SizedBox(
-                  width: 250.0,
-                  height: 60.0,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(builder: (BuildContext goToLogin) {
-                          return const RemoveEmployee();
-                        }),
-                      );
-                    },
-                    style: ButtonStyle(
-                      minimumSize:
-                          MaterialStateProperty.all<Size>(const Size(50, 60)),
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                        const Color.fromARGB(255, 255, 255, 255),
-                      ),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                      ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                      child: Row(
-                        children: [
-                          Image.asset(
-                            "images/subtract.png",
-                            width: 30,
-                            height: 30,
-                          ),
-                          const SizedBox(width: 25),
-                          const Text(
-                            "Delete Employee",
-                            style: TextStyle(
-                              color: Color(0xFF00AFEE),
-                              fontSize: 18,
-                              fontFamily: 'OpenSans',
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 0,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 25,
-                ),
-                SizedBox(
-                  width: 250.0,
+                  width: 270.0,
                   height: 60.0,
                   child: ElevatedButton(
                     onPressed: () {
@@ -226,7 +224,7 @@ class _ManageEmployeesState extends State<ManageEmployees> {
                           ),
                           const SizedBox(width: 25),
                           const Text(
-                            "Edit Employee",
+                            "View/Edit Employees",
                             style: TextStyle(
                               color: Color(0xFF00AFEE),
                               fontSize: 18,

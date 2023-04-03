@@ -16,12 +16,12 @@ class _AddEmployeeState extends State<AddEmployee> {
   final _addressController = TextEditingController();
   final _phoneController = TextEditingController();
   
-Future recordProfit() async {
+Future addEmp() async {
     final User user = FirebaseAuth.instance.currentUser!;
     final uid = user.uid;
 
     // add user details
-    addProfitDetails(
+    addEmployeeDetails(
             _nameController.text.trim(),
             _postController.text.trim(),
             _addressController.text.trim(),
@@ -36,7 +36,7 @@ Future recordProfit() async {
     });
   }
 
-  Future addProfitDetails(
+  Future addEmployeeDetails(
       String name, String post, String address, int phone, String uid) async {
     final User user = FirebaseAuth.instance.currentUser!;
     final uid = user.uid;
@@ -303,7 +303,7 @@ Future recordProfit() async {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 80, vertical: 0),
                     child: ElevatedButton(
-                      onPressed: recordProfit,
+                      onPressed: addEmp,
                       style: ButtonStyle(
                         minimumSize: MaterialStateProperty.all<Size>(
                             const Size(150, 50)),
