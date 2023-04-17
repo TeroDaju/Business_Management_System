@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -17,13 +18,16 @@ class _RegisterPageState extends State<RegisterPage> {
   final _confirmPasswordController = TextEditingController();
   final _usernameController = TextEditingController();
   final _phoneNoController = TextEditingController();
+  final _orgNameController = TextEditingController();
+  final _addressController = TextEditingController();
+  final _genderController = TextEditingController();
 
-  Future signUp() async{
-    if (passwordConfirmed()){
+  Future signUp() async {
+    if (passwordConfirmed()) {
       // create user
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
-      email: _emailController.text.trim(),
-      password: _passwordController.text.trim(),
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
       );
 
       final User user = FirebaseAuth.instance.currentUser!;
@@ -31,29 +35,35 @@ class _RegisterPageState extends State<RegisterPage> {
 
       // add user details
       addUserDetails(
-        _usernameController.text.trim(),
-        _emailController.text.trim(),
-        int.parse(_phoneNoController.text.trim()),
-        uid
-        ).then((value){
-          Navigator.of(context).pop();
-             }
-           );
+              _usernameController.text.trim(),
+              _emailController.text.trim(),
+              int.parse(_phoneNoController.text.trim()),
+              _orgNameController.text.trim(),
+              _addressController.text.trim(),
+              _genderController.text.trim(),
+              uid)
+          .then((value) {
+        Navigator.of(context).pop();
+      });
     }
   }
 
-  Future addUserDetails(String username, String email, int phone, String uid) async{
+  Future addUserDetails(
+      String username, String email, int phone,String orgName,String address,String gender, String uid) async {
     await FirebaseFirestore.instance.collection('users').doc(uid).set({
-        'username': username,
-        'email': email,
-        'phone': phone,
-        'uid' : uid,
-      }
-    );
+      'username': username,
+      'email': email,
+      'phone': phone,
+      'orgName': orgName,
+      'address': address,
+      'gender':gender,
+      'uid': uid,
+    });
   }
 
-  bool passwordConfirmed(){
-    if (_passwordController.text.trim() == _confirmPasswordController.text.trim()){
+  bool passwordConfirmed() {
+    if (_passwordController.text.trim() ==
+        _confirmPasswordController.text.trim()) {
       return true;
     } else {
       return false;
@@ -67,7 +77,9 @@ class _RegisterPageState extends State<RegisterPage> {
     _confirmPasswordController.dispose();
     _usernameController.dispose();
     _phoneNoController.dispose();
-
+    _orgNameController.dispose();
+    _addressController.dispose();
+    _genderController.dispose();
     super.dispose();
   }
 
@@ -97,7 +109,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 Container(
                   width: 325,
-                  height: 600,
+                  height: 900,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(20),
@@ -143,8 +155,12 @@ class _RegisterPageState extends State<RegisterPage> {
                         height: 40,
                         child: TextFormField(
                           controller: _usernameController,
-                          decoration:
-                              const InputDecoration(fillColor: Color(0xFF00BEF0)),
+                          decoration: const InputDecoration(
+                              fillColor: Color(0xFF00BEF0)),
+                          keyboardType: TextInputType.text,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.deny(RegExp(r'\d+')),
+                          ],
                         ),
                       ),
                       Container(
@@ -169,10 +185,11 @@ class _RegisterPageState extends State<RegisterPage> {
                         width: 250,
                         height: 40,
                         child: TextFormField(
-                          obscureText: true, //to hide the input given by the user
+                          obscureText:
+                              true, //to hide the input given by the user
                           controller: _passwordController,
-                          decoration:
-                              const InputDecoration(fillColor: Color(0xFF00BEF0)),
+                          decoration: const InputDecoration(
+                              fillColor: Color(0xFF00BEF0)),
                         ),
                       ),
                       Container(
@@ -197,10 +214,11 @@ class _RegisterPageState extends State<RegisterPage> {
                         width: 250,
                         height: 40,
                         child: TextFormField(
-                          obscureText: true, //to hide the input given by the user
+                          obscureText:
+                              true, //to hide the input given by the user
                           controller: _confirmPasswordController,
-                          decoration:
-                              const InputDecoration(fillColor: Color(0xFF00BEF0)),
+                          decoration: const InputDecoration(
+                              fillColor: Color(0xFF00BEF0)),
                         ),
                       ),
                       Container(
@@ -226,8 +244,35 @@ class _RegisterPageState extends State<RegisterPage> {
                         height: 40,
                         child: TextFormField(
                           controller: _emailController,
-                          decoration:
-                              const InputDecoration(fillColor: Color(0xFF00BEF0)),
+                          decoration: const InputDecoration(
+                              fillColor: Color(0xFF00BEF0)),
+                        ),
+                      ),
+                      Container(
+                        height: 12,
+                      ),
+                      Container(
+                        alignment: Alignment.bottomLeft,
+                        height: 40,
+                        width: 700,
+                        child: const Text(
+                          "      Gender",
+                          style: TextStyle(
+                            color: Color(0xFF00BEF0),
+                            fontSize: 18,
+                            fontFamily: 'OpenSans',
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 0,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 250,
+                        height: 40,
+                        child: TextFormField(
+                          controller: _genderController,
+                          decoration: const InputDecoration(
+                              fillColor: Color(0xFF00BEF0)),
                         ),
                       ),
                       Container(
@@ -253,8 +298,62 @@ class _RegisterPageState extends State<RegisterPage> {
                         height: 40,
                         child: TextFormField(
                           controller: _phoneNoController,
-                          decoration:
-                              const InputDecoration(fillColor: Color(0xFF00BEF0)),
+                          decoration: const InputDecoration(
+                              fillColor: Color(0xFF00BEF0)),
+                        ),
+                      ),
+                      Container(
+                        height: 12,
+                      ),
+                      Container(
+                        alignment: Alignment.bottomLeft,
+                        height: 40,
+                        width: 700,
+                        child: const Text(
+                          "      Organization Name",
+                          style: TextStyle(
+                            color: Color(0xFF00BEF0),
+                            fontSize: 18,
+                            fontFamily: 'OpenSans',
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 0,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 250,
+                        height: 40,
+                        child: TextFormField(
+                          controller: _orgNameController,
+                          decoration: const InputDecoration(
+                              fillColor: Color(0xFF00BEF0)),
+                        ),
+                      ),
+                      Container(
+                        height: 12,
+                      ),
+                      Container(
+                        alignment: Alignment.bottomLeft,
+                        height: 40,
+                        width: 700,
+                        child: const Text(
+                          "      Address",
+                          style: TextStyle(
+                            color: Color(0xFF00BEF0),
+                            fontSize: 18,
+                            fontFamily: 'OpenSans',
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 0,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 250,
+                        height: 40,
+                        child: TextFormField(
+                          controller: _addressController,
+                          decoration: const InputDecoration(
+                              fillColor: Color(0xFF00BEF0)),
                         ),
                       ),
                       Container(
@@ -263,12 +362,13 @@ class _RegisterPageState extends State<RegisterPage> {
                       ElevatedButton(
                         onPressed: signUp,
                         style: ButtonStyle(
-                          minimumSize:
-                              MaterialStateProperty.all<Size>(const Size(150, 50)),
+                          minimumSize: MaterialStateProperty.all<Size>(
+                              const Size(150, 50)),
                           backgroundColor: MaterialStateProperty.all<Color>(
                             const Color(0xFF00BEF0),
                           ),
-                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
                             RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30),
                             ),

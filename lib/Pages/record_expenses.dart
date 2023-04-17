@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'manage_revenue.dart';
 
@@ -26,10 +27,12 @@ class _RecordExpensesState extends State<RecordExpenses> {
   final _titleController = TextEditingController();
   final _amountController = TextEditingController();
   final _remarksController = TextEditingController();
+  DateTime now = DateTime.now();
 
   Future recordExpenses() async {
     final User user = FirebaseAuth.instance.currentUser!;
     final uid = user.uid;
+    String date = "${now.year}/${now.month}/${now.day}-${now.hour}:${now.minute}";
 
     // add user details
     addExpensesDetails(
@@ -37,7 +40,8 @@ class _RecordExpensesState extends State<RecordExpenses> {
             int.parse(_amountController.text.trim()),
             _remarksController.text.trim(),
             type!,
-            uid)
+            uid,
+            date)
         .then((value) {
       Navigator.pushReplacement(
           context,
@@ -48,7 +52,7 @@ class _RecordExpensesState extends State<RecordExpenses> {
   }
 
   Future addExpensesDetails(
-      String title, int amount, String remarks, String type, String uid) async {
+      String title, int amount, String remarks, String type, String uid, String date) async {
     await FirebaseFirestore.instance
         .collection('users')
         .doc(uid)
@@ -59,11 +63,12 @@ class _RecordExpensesState extends State<RecordExpenses> {
       'remarks': remarks,
       'type': type,
       'uid': uid,
-    }).then((value) => addAllDetails(title, amount, remarks, type));
+      'date' : date,
+    }).then((value) => addAllDetails(title, amount, remarks, type,date));
   }
 
   Future addAllDetails(
-      String title, int amount, String remarks, String type) async {
+      String title, int amount, String remarks, String type,String date) async {
     final User user = FirebaseAuth.instance.currentUser!;
     final uid = user.uid;
     await FirebaseFirestore.instance
@@ -76,6 +81,7 @@ class _RecordExpensesState extends State<RecordExpenses> {
       'remarks': remarks,
       'type': type,
       'which': false,
+      'date' : date,
     });
   }
 
@@ -173,6 +179,10 @@ class _RecordExpensesState extends State<RecordExpenses> {
                               borderSide: BorderSide(color: Colors.white),
                             ),
                           ),
+                          keyboardType: TextInputType.text,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.deny(RegExp(r'\d+')),
+                          ],
                         ),
                       ),
                     ),

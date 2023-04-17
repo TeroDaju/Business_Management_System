@@ -1,4 +1,5 @@
 import 'package:businessmanagementsystem/Pages/add_employee.dart';
+import 'package:businessmanagementsystem/Pages/attendance.dart';
 import 'package:businessmanagementsystem/Pages/edit_employee.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -137,7 +138,7 @@ class _ManageEmployeesState extends State<ManageEmployees> {
                   ),
                 ),
                 const SizedBox(
-                  height: 40,
+                  height: 25,
                 ),
                 SizedBox(
                   width: 270.0,
@@ -188,7 +189,7 @@ class _ManageEmployeesState extends State<ManageEmployees> {
                   ),
                 ),
                 const SizedBox(
-                  height: 40,
+                  height: 25,
                 ),
                 SizedBox(
                   width: 270.0,
@@ -225,6 +226,57 @@ class _ManageEmployeesState extends State<ManageEmployees> {
                           const SizedBox(width: 25),
                           const Text(
                             "View/Edit Employees",
+                            style: TextStyle(
+                              color: Color(0xFF00AFEE),
+                              fontSize: 18,
+                              fontFamily: 'OpenSans',
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 0,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 25,
+                ),
+                SizedBox(
+                  width: 270.0,
+                  height: 60.0,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(builder: (BuildContext goToLogin) {
+                          return const Attendance();
+                        }),
+                      );
+                    },
+                    style: ButtonStyle(
+                      minimumSize:
+                          MaterialStateProperty.all<Size>(const Size(50, 60)),
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                        const Color.fromARGB(255, 255, 255, 255),
+                      ),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            "images/Attendance.png",
+                            width: 30,
+                            height: 30,
+                          ),
+                          const SizedBox(width: 25),
+                          const Text(
+                            "Attendance",
                             style: TextStyle(
                               color: Color(0xFF00AFEE),
                               fontSize: 18,

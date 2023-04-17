@@ -2,6 +2,7 @@ import 'package:businessmanagementsystem/Pages/manage_employees.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class AddEmployee extends StatefulWidget {
   const AddEmployee({super.key});
@@ -164,6 +165,10 @@ Future addEmp() async {
                             borderSide: BorderSide(color: Colors.white),
                           ),
                         ),
+                        keyboardType: TextInputType.text,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.deny(RegExp(r'\d+')),
+                          ],
                       ),
                     ),
                   ),

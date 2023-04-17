@@ -2,6 +2,8 @@ import 'package:businessmanagementsystem/Pages/manage_revenue.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 
 class RecordProfit extends StatefulWidget {
   const RecordProfit({super.key});
@@ -18,10 +20,12 @@ class _RecordProfitState extends State<RecordProfit> {
   final _titleController = TextEditingController();
   final _amountController = TextEditingController();
   final _remarksController = TextEditingController();
+  DateTime now = DateTime.now();
 
   Future recordProfit() async {
     final User user = FirebaseAuth.instance.currentUser!;
     final uid = user.uid;
+    String date = "${now.year}/${now.month}/${now.day}-${now.hour}:${now.minute}";
 
     // add user details
     addProfitDetails(
@@ -29,7 +33,8 @@ class _RecordProfitState extends State<RecordProfit> {
             int.parse(_amountController.text.trim()),
             _remarksController.text.trim(),
             type!,
-            uid)
+            uid,
+            date)
         .then((value) {
       Navigator.pushReplacement(
           context,
@@ -40,7 +45,7 @@ class _RecordProfitState extends State<RecordProfit> {
   }
 
   Future addProfitDetails(
-      String title, int amount, String remarks, String type, String uid) async {
+      String title, int amount, String remarks, String type, String uid, String date) async {
     final User user = FirebaseAuth.instance.currentUser!;
     final uid = user.uid;
     await FirebaseFirestore.instance
@@ -53,11 +58,12 @@ class _RecordProfitState extends State<RecordProfit> {
       'remarks': remarks,
       'type': type,
       'uid': uid,
-    }).then((value) => addAllDetails(title, amount, remarks, type));
+      'date' : date,
+    }).then((value) => addAllDetails(title, amount, remarks, type,date));
   }
 
   Future addAllDetails(
-      String title, int amount, String remarks, String type) async {
+      String title, int amount, String remarks, String type,String date) async {
     final User user = FirebaseAuth.instance.currentUser!;
     final uid = user.uid;
     await FirebaseFirestore.instance
@@ -70,6 +76,7 @@ class _RecordProfitState extends State<RecordProfit> {
       'remarks': remarks,
       'type': type,
       'which': true,
+      'date' : date,
     });
   }
 
@@ -167,6 +174,10 @@ class _RecordProfitState extends State<RecordProfit> {
                             borderSide: BorderSide(color: Colors.white),
                           ),
                         ),
+                        keyboardType: TextInputType.text,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.deny(RegExp(r'\d+')),
+                          ],
                       ),
                     ),
                   ),
