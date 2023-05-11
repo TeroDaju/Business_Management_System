@@ -145,7 +145,7 @@ class _ManageEmployeesState extends State<ManageEmployees> {
                   height: 60.0,
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.of(context).push(
+                      Navigator.of(context).pushReplacement(
                         MaterialPageRoute(builder: (BuildContext goToLogin) {
                           return const AddEmployee();
                         }),

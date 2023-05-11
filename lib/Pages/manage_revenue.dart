@@ -196,7 +196,7 @@ class _ManageRevenueState extends State<ManageRevenue> {
                   height: 60.0,
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.of(context).push(
+                      Navigator.of(context).pushReplacement(
                         MaterialPageRoute(builder: (BuildContext goToLogin) {
                           return const RecordProfit();
                         }),
@@ -247,7 +247,7 @@ class _ManageRevenueState extends State<ManageRevenue> {
                   height: 60.0,
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.of(context).push(
+                      Navigator.of(context).pushReplacement(
                         MaterialPageRoute(builder: (BuildContext goToLogin) {
                           return const RecordExpenses();
                         }),

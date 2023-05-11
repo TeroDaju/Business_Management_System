@@ -19,7 +19,7 @@ class _AddTaskState extends State<AddTask> {
         appBar: AppBar(
           centerTitle: true,
           title: const Text(
-            "Add Employee",
+            "Add Task",
             style: TextStyle(
               fontSize: 25,
               fontFamily: 'OpenSans',

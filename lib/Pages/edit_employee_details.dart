@@ -159,50 +159,52 @@ class _EditEmployeeDetailsPageState extends State<EditEmployeeDetailsPage> {
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TextField(
-              decoration: const InputDecoration(labelText: 'Name'),
-              controller: nameController,
-            ),
-            const SizedBox(height: 16.0),
-            TextField(
-              decoration: const InputDecoration(labelText: 'Post'),
-              controller: postController,
-            ),
-            const SizedBox(height: 16.0),
-            TextField(
-              decoration: const InputDecoration(labelText: 'Phone'),
-              controller: phoneController,
-            ),
-            const SizedBox(height: 16.0),
-            TextField(
-              decoration: const InputDecoration(labelText: 'Address'),
-              controller: addressController,
-            ),
-            const SizedBox(height: 40.0),
-            Center(
-              child: ElevatedButton(
-                style: ButtonStyle(
-                      minimumSize:
-                          MaterialStateProperty.all<Size>(const Size(50, 60)),
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                        const Color.fromARGB(255, 255, 60, 60),
-                      ),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TextField(
+                decoration: const InputDecoration(labelText: 'Name'),
+                controller: nameController,
+              ),
+              const SizedBox(height: 16.0),
+              TextField(
+                decoration: const InputDecoration(labelText: 'Post'),
+                controller: postController,
+              ),
+              const SizedBox(height: 16.0),
+              TextField(
+                decoration: const InputDecoration(labelText: 'Phone'),
+                controller: phoneController,
+              ),
+              const SizedBox(height: 16.0),
+              TextField(
+                decoration: const InputDecoration(labelText: 'Address'),
+                controller: addressController,
+              ),
+              const SizedBox(height: 40.0),
+              Center(
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                        minimumSize:
+                            MaterialStateProperty.all<Size>(const Size(50, 60)),
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                          const Color.fromARGB(255, 255, 60, 60),
+                        ),
+                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
                         ),
                       ),
-                    ),
-                onPressed: _confirmDeleteEmployee,
-                child: const Text('Delete Employee'),
+                  onPressed: _confirmDeleteEmployee,
+                  child: const Text('Delete Employee'),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
