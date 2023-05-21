@@ -1,5 +1,5 @@
-import 'package:businessmanagementsystem/Pages/add_task.dart';
-import 'package:businessmanagementsystem/Pages/edit_task.dart';
+import 'package:businessmanagementsystem/Pages/Tasks/add_task.dart';
+import 'package:businessmanagementsystem/Pages/Tasks/edit_task.dart';
 import 'package:flutter/material.dart';
 
 class ManageTasks extends StatefulWidget {

@@ -1,5 +1,5 @@
-import 'package:businessmanagementsystem/Pages/login_page.dart';
-import 'package:businessmanagementsystem/Pages/register_page.dart';
+import 'package:businessmanagementsystem/Pages/Login/login_page.dart';
+import 'package:businessmanagementsystem/Pages/Login/register_page.dart';
 import 'package:flutter/material.dart';
 
 class AuthPage extends StatefulWidget {

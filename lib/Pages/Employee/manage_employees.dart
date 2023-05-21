@@ -1,6 +1,6 @@
-import 'package:businessmanagementsystem/Pages/add_employee.dart';
-import 'package:businessmanagementsystem/Pages/attendance.dart';
-import 'package:businessmanagementsystem/Pages/edit_employee.dart';
+import 'package:businessmanagementsystem/Pages/Employee/add_employee.dart';
+import 'package:businessmanagementsystem/Pages/Employee/attendance.dart';
+import 'package:businessmanagementsystem/Pages/Employee/edit_employee.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

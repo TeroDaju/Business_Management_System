@@ -1,8 +1,8 @@
-import 'package:businessmanagementsystem/Pages/login_page.dart';
-import 'package:businessmanagementsystem/Pages/manage_employees.dart';
-import 'package:businessmanagementsystem/Pages/manage_revenue.dart';
-import 'package:businessmanagementsystem/Pages/manage_tasks.dart';
-import 'package:businessmanagementsystem/Pages/profile.dart';
+import 'package:businessmanagementsystem/Pages/Login/login_page.dart';
+import 'package:businessmanagementsystem/Pages/Employee/manage_employees.dart';
+import 'package:businessmanagementsystem/Pages/Revenue/manage_revenue.dart';
+import 'package:businessmanagementsystem/Pages/Tasks/manage_tasks.dart';
+import 'package:businessmanagementsystem/Pages/Profile/profile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';

@@ -1,4 +1,4 @@
-import 'package:businessmanagementsystem/Pages/manage_employees.dart';
+import 'package:businessmanagementsystem/Pages/Employee/manage_employees.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

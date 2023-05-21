@@ -1,7 +1,7 @@
-import 'package:businessmanagementsystem/Pages/register_page.dart';
+import 'package:businessmanagementsystem/Pages/Login/register_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'dashboard.dart';
+import '../dashboard.dart';
 import 'forgot_password.dart';
 
 class LoginPage extends StatefulWidget {

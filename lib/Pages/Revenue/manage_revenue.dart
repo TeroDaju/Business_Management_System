@@ -1,6 +1,6 @@
-import 'package:businessmanagementsystem/Pages/record_expenses.dart';
-import 'package:businessmanagementsystem/Pages/record_profits.dart';
-import 'package:businessmanagementsystem/Pages/revenue_history.dart';
+import 'package:businessmanagementsystem/Pages/Revenue/record_expenses.dart';
+import 'package:businessmanagementsystem/Pages/Revenue/record_profits.dart';
+import 'package:businessmanagementsystem/Pages/Revenue/revenue_history.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
