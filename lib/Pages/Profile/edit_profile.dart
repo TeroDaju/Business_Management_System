@@ -1,8 +1,6 @@
 import 'package:businessmanagementsystem/Pages/dashboard.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 
 class EditProfile extends StatefulWidget {
   const EditProfile(
@@ -62,7 +60,7 @@ class _EditProfileState extends State<EditProfile> {
         ));
       });
     } catch (e) {
-      print(e);
+      //print(e);
     }
   }
 

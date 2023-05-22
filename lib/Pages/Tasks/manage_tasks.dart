@@ -1,5 +1,7 @@
 import 'package:businessmanagementsystem/Pages/Tasks/add_task.dart';
 import 'package:businessmanagementsystem/Pages/Tasks/edit_task.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ManageTasks extends StatefulWidget {
@@ -10,6 +12,30 @@ class ManageTasks extends StatefulWidget {
 }
 
 class _ManageTasksState extends State<ManageTasks> {
+  int _taskCount = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadTasksCount();
+  }
+
+  Future<void> _loadTasksCount() async {
+    try {
+      final snapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .collection('tasks')
+          .get();
+
+      setState(() {
+        _taskCount = snapshot.size;
+      });
+    } catch (e) {
+      //print('Error loading tasks count: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -33,10 +59,10 @@ class _ManageTasksState extends State<ManageTasks> {
           Container(
             height: 250,
             decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage("images/tasks.png"),
-                  ),
-                ),
+              image: DecorationImage(
+                image: AssetImage("images/tasks.png"),
+              ),
+            ),
           ),
           Container(
             alignment: Alignment.center,
@@ -82,10 +108,11 @@ class _ManageTasksState extends State<ManageTasks> {
                           fontWeight: FontWeight.bold,
                           letterSpacing: 0,
                         ),
-                      ),Row(
+                      ),
+                      Row(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(top: 10,left:40),
+                            padding: const EdgeInsets.only(top: 10, left: 40),
                             child: Image.asset(
                               "images/noTasks.png",
                               width: 30,
@@ -93,10 +120,9 @@ class _ManageTasksState extends State<ManageTasks> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(top: 10,left:15),
+                            padding: const EdgeInsets.only(top: 10, left: 15),
                             child: Text(
-                              "0",
-                              //"$_employeeCount",
+                              "$_taskCount",
                               textAlign: TextAlign.center,
                               style: const TextStyle(
                                 fontSize: 20,

@@ -3,7 +3,6 @@ import 'package:businessmanagementsystem/Pages/Revenue/record_profits.dart';
 import 'package:businessmanagementsystem/Pages/Revenue/revenue_history.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 class ManageRevenue extends StatefulWidget {
@@ -33,6 +32,7 @@ class _ManageRevenueState extends State<ManageRevenue> {
         .collection("profits")
         .get()
         .then((value) {
+      // ignore: avoid_function_literals_in_foreach_calls
       value.docs.forEach((element) {
         profit.add(element.get("amount"));
       });
@@ -46,6 +46,7 @@ class _ManageRevenueState extends State<ManageRevenue> {
         .collection("expenses")
         .get()
         .then((value) {
+      // ignore: avoid_function_literals_in_foreach_calls
       value.docs.forEach((element) {
         expense.add(element.get("amount"));
       });
@@ -175,7 +176,7 @@ class _ManageRevenueState extends State<ManageRevenue> {
                               "Rs.$revenue",
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                color: revenue>=0?Color(0xFF14FF00):Color(0xFFF44336),
+                                color: revenue>=0?const Color(0xFF14FF00):const Color(0xFFF44336),
                                 fontSize: 20,
                                 fontFamily: 'OpenSans',
                                 fontWeight: FontWeight.bold,

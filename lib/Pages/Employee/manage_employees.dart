@@ -33,7 +33,7 @@ class _ManageEmployeesState extends State<ManageEmployees> {
         _employeeCount = snapshot.size;
       });
     } catch (e) {
-      print('Error loading employee count: $e');
+      //print('Error loading employee count: $e');
     }
   }
   

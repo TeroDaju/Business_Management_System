@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, duplicate_ignore
 
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -58,7 +58,7 @@ class _EditEmployeeDetailsPageState extends State<EditEmployeeDetailsPage> {
       phoneController.text = data['phone'] ?? '';
       addressController.text = data['address'] ?? '';
     } catch (e) {
-      print('Error loading employee data: $e');
+      //print('Error loading employee data: $e');
     }
   }
 

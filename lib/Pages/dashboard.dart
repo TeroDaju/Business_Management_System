@@ -5,7 +5,6 @@ import 'package:businessmanagementsystem/Pages/Tasks/manage_tasks.dart';
 import 'package:businessmanagementsystem/Pages/Profile/profile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 class Dashboard extends StatefulWidget {
@@ -45,7 +44,6 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   void initState() {
-    // TODO: implement initState
     _getUsername();
     super.initState();
   }
