@@ -181,7 +181,7 @@ class _RecordExpensesState extends State<RecordExpenses> {
                           ),
                           keyboardType: TextInputType.text,
                           inputFormatters: [
-                            FilteringTextInputFormatter.deny(RegExp(r'\d+')),
+                            FilteringTextInputFormatter.deny(RegExp(r'^[0-9\s]{1}$')),
                           ],
                         ),
                       ),

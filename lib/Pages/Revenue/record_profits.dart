@@ -176,7 +176,7 @@ class _RecordProfitState extends State<RecordProfit> {
                         ),
                         keyboardType: TextInputType.text,
                           inputFormatters: [
-                            FilteringTextInputFormatter.deny(RegExp(r'\d+')),
+                            FilteringTextInputFormatter.deny(RegExp(r'^[0-9\s]{1}$')),
                           ],
                       ),
                     ),

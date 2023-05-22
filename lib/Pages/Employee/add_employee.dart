@@ -167,7 +167,7 @@ Future addEmp() async {
                         ),
                         keyboardType: TextInputType.text,
                           inputFormatters: [
-                            FilteringTextInputFormatter.deny(RegExp(r'\d+')),
+                            FilteringTextInputFormatter.deny(RegExp(r'^[0-9\s]{1}$')),
                           ],
                       ),
                     ),
@@ -212,7 +212,12 @@ Future addEmp() async {
                             borderSide: BorderSide(color: Colors.white),
                           ),
                         ),
+                        keyboardType: TextInputType.text,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.deny(RegExp(r'^[0-9\s]{1}$')),
+                          ],
                       ),
+                      
                     ),
                   ),
                   Container(
@@ -255,6 +260,10 @@ Future addEmp() async {
                             borderSide: BorderSide(color: Colors.white),
                           ),
                         ),
+                        keyboardType: TextInputType.text,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.deny(RegExp(r'^[0-9\s]{1}$')),
+                          ],
                       ),
                     ),
                   ),
@@ -298,6 +307,9 @@ Future addEmp() async {
                             borderSide: BorderSide(color: Colors.white),
                           ),
                         ),
+                        inputFormatters: [
+                            FilteringTextInputFormatter.allow(RegExp(r'\d+')),
+                          ],
                       ),
                     ),
                   ),

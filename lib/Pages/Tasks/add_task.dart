@@ -1,9 +1,12 @@
 // ignore_for_file: depend_on_referenced_packages
 
+import 'package:businessmanagementsystem/Pages/Tasks/manage_tasks.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AddTask extends StatefulWidget {
   const AddTask({super.key});
@@ -13,31 +16,82 @@ class AddTask extends StatefulWidget {
 }
 
 class _AddTaskState extends State<AddTask> {
+  late String uid;
   final format = DateFormat("yyyy-MM-dd");
   DateTime? selectedDate;
-
-  // List to hold names of added employees
-  List<String> employees = [];
-  String? type = 'Select Employee';
+  String? selectedEmployee;
 
   //text controllers
   final _titleController = TextEditingController();
-  final _amountController = TextEditingController();
   final _remarksController = TextEditingController();
   DateTime now = DateTime.now();
 
-  void addEmployee(String employeeName) {
-    setState(() {
-      employees.add(employeeName);
-    });
+  @override
+  void initState() {
+    super.initState();
+    final User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      uid = user.uid;
+    }
+  }
+
+  Stream<QuerySnapshot> getEmployeesStream(String uid) {
+    return FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .collection('employees')
+        .snapshots();
   }
 
   @override
   void dispose() {
     _titleController.dispose();
-    _amountController.dispose();
     _remarksController.dispose();
     super.dispose();
+  }
+
+  Future<void> addTask() async {
+    final User user = FirebaseAuth.instance.currentUser!;
+    final uid = user.uid;
+    String date =
+        "${now.year}/${now.month}/${now.day}-${now.hour}:${now.minute}";
+
+    // Add employee details
+    await addTaskDetails(
+      _titleController.text.trim(),
+      _remarksController.text.trim(),
+      date,
+      selectedEmployee!,
+      uid,
+    );
+
+    // ignore: use_build_context_synchronously
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const ManageTasks(),
+      ),
+    );
+  }
+
+  Future<void> addTaskDetails(
+    String title,
+    String remarks,
+    String date,
+    String selectedEmployee,
+    String uid,
+  ) async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .collection('tasks')
+        .add({
+      'title': title,
+      'remarks': remarks,
+      'date': date,
+      'selectedEmployee': selectedEmployee,
+      'uid': uid,
+    });
   }
 
   @override
@@ -128,7 +182,7 @@ class _AddTaskState extends State<AddTask> {
                           ),
                           keyboardType: TextInputType.text,
                           inputFormatters: [
-                            FilteringTextInputFormatter.deny(RegExp(r'\d+')),
+                            FilteringTextInputFormatter.deny(RegExp(r'^[0-9\s]{1}$')),
                           ],
                         ),
                       ),
@@ -231,6 +285,10 @@ class _AddTaskState extends State<AddTask> {
                               borderSide: BorderSide(color: Colors.white),
                             ),
                           ),
+                          keyboardType: TextInputType.text,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.deny(RegExp(r'^[0-9\s]{1}$')),
+                          ],
                         ),
                       ),
                     ),
@@ -238,31 +296,56 @@ class _AddTaskState extends State<AddTask> {
                       height: 57,
                       padding: const EdgeInsets.symmetric(
                           horizontal: 30, vertical: 0),
-                      child: DropdownButtonFormField<String>(
-                        style: const TextStyle(
-                          fontSize: 14,
-                          color: Colors.black,
-                        ),
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Colors.white,
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: const BorderSide(color: Colors.white),
-                          ),
-                          focusedBorder: const OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(12)),
-                            borderSide: BorderSide(color: Colors.white),
-                          ),
-                        ),
-                        value: type,
-                        items: employees.map((item) {
-                          return DropdownMenuItem<String>(
-                            value: item,
-                            child: Text(item),
-                          );
-                        }).toList(),
-                        onChanged: (item) => setState(() => type = item),
+                      child: StreamBuilder<QuerySnapshot>(
+                        stream: getEmployeesStream(uid),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<QuerySnapshot> snapshot) {
+                          if (snapshot.hasData) {
+                            final employees = snapshot.data!.docs;
+
+                            return DropdownButtonFormField<String>(
+                              style: const TextStyle(
+                                fontSize: 14,
+                                color: Colors.black,
+                              ),
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: Colors.white,
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide:
+                                      const BorderSide(color: Colors.white),
+                                ),
+                                focusedBorder: const OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(12)),
+                                  borderSide: BorderSide(color: Colors.white),
+                                ),
+                              ),
+                              value: selectedEmployee,
+                              onChanged: (String? value) {
+                                setState(() {
+                                  selectedEmployee = value!;
+                                });
+                              },
+                              items: employees.map((DocumentSnapshot document) {
+                                final employee =
+                                    document.data() as Map<String, dynamic>;
+                                final employeeName = employee['name'];
+
+                                return DropdownMenuItem<String>(
+                                  value: employeeName,
+                                  child: Text(employeeName),
+                                );
+                              }).toList(),
+                              // Add your desired decoration and style properties here
+                            );
+                          } else if (snapshot.hasError) {
+                            return Text('Error: ${snapshot.error}');
+                          } else {
+                            return const CircularProgressIndicator();
+                          }
+                        },
                       ),
                     ),
                     Container(
@@ -272,7 +355,7 @@ class _AddTaskState extends State<AddTask> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 60, vertical: 0),
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: addTask,
                         style: ButtonStyle(
                           minimumSize: MaterialStateProperty.all<Size>(
                               const Size(200, 50)),
