@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class EditEmployeeDetailsPage extends StatefulWidget {
   final String employeeId;
@@ -170,37 +171,53 @@ class _EditEmployeeDetailsPageState extends State<EditEmployeeDetailsPage> {
               TextField(
                 decoration: const InputDecoration(labelText: 'Name'),
                 controller: nameController,
+                keyboardType: TextInputType.text,
+                inputFormatters: [
+                  FilteringTextInputFormatter.deny(RegExp(r'^[0-9\s]{1}$')),
+                ],
               ),
               const SizedBox(height: 16.0),
               TextField(
                 decoration: const InputDecoration(labelText: 'Post'),
                 controller: postController,
+                keyboardType: TextInputType.text,
+                inputFormatters: [
+                  FilteringTextInputFormatter.deny(RegExp(r'^[0-9\s]{1}$')),
+                ],
               ),
               const SizedBox(height: 16.0),
               TextField(
                 decoration: const InputDecoration(labelText: 'Phone'),
                 controller: phoneController,
+                keyboardType: TextInputType.text,
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp(r'\d+')),
+                ],
               ),
               const SizedBox(height: 16.0),
               TextField(
                 decoration: const InputDecoration(labelText: 'Address'),
                 controller: addressController,
+                keyboardType: TextInputType.text,
+                inputFormatters: [
+                  FilteringTextInputFormatter.deny(RegExp(r'^[0-9\s]{1}$')),
+                ],
               ),
               const SizedBox(height: 40.0),
               Center(
                 child: ElevatedButton(
                   style: ButtonStyle(
-                        minimumSize:
-                            MaterialStateProperty.all<Size>(const Size(50, 60)),
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                          const Color.fromARGB(255, 255, 60, 60),
-                        ),
-                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                        ),
+                    minimumSize:
+                        MaterialStateProperty.all<Size>(const Size(50, 60)),
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                      const Color.fromARGB(255, 255, 60, 60),
+                    ),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
                       ),
+                    ),
+                  ),
                   onPressed: _confirmDeleteEmployee,
                   child: const Text('Delete Employee'),
                 ),

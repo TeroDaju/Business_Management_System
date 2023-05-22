@@ -41,6 +41,7 @@ class _RevenueHistoryState extends State<RevenueHistory> {
             .collection('users')
             .doc(uid)
             .collection('all')
+            .orderBy('date', descending: true)
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData) {

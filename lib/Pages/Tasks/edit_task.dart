@@ -25,7 +25,7 @@ class _EditTaskState extends State<EditTask> {
       appBar: AppBar(
         centerTitle: true,
         title: const Text(
-          "Edit Employees",
+          "View Tasks",
           style: TextStyle(
             fontSize: 25,
             fontFamily: 'OpenSans',
@@ -40,7 +40,7 @@ class _EditTaskState extends State<EditTask> {
         stream: FirebaseFirestore.instance
             .collection('users')
             .doc(uid)
-            .collection('employees')
+            .collection('tasks')
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData) {
@@ -51,8 +51,11 @@ class _EditTaskState extends State<EditTask> {
               Map<String, dynamic> data =
                   document.data() as Map<String, dynamic>;
               return ListTile(
-                title: Text(data['name']),
-                subtitle: Text(data['post']),
+                title: Text(data['title']),
+                subtitle: Text(data['selectedEmployee']),
+                trailing: Text(
+                  '${data['status']}' '\n' '${data['date']}',
+                ),
                 onTap: () {
                   // Navigate to the employee details page
                   Navigator.push(

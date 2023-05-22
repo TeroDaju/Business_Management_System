@@ -20,7 +20,7 @@ class _AddTaskState extends State<AddTask> {
   final format = DateFormat("yyyy-MM-dd");
   DateTime? selectedDate;
   String? selectedEmployee;
-
+  String status = "In Progress";
   //text controllers
   final _titleController = TextEditingController();
   final _remarksController = TextEditingController();
@@ -91,6 +91,7 @@ class _AddTaskState extends State<AddTask> {
       'date': date,
       'selectedEmployee': selectedEmployee,
       'uid': uid,
+      'status': status,
     });
   }
 
