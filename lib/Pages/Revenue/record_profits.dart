@@ -221,6 +221,10 @@ class _RecordProfitState extends State<RecordProfit> {
                             borderSide: BorderSide(color: Colors.white),
                           ),
                         ),
+                        keyboardType: TextInputType.text,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(RegExp(r'\d+')),
+                          ],
                       ),
                     ),
                   ),

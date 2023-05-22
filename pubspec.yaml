@@ -41,6 +41,7 @@ dependencies:
   cloud_firestore: ^4.4.0
   flutter_custom_clippers: ^2.1.0
   d_chart: ^2.2.11
+  datetime_picker_formfield: ^2.0.0
 
 dev_dependencies:
   flutter_test:

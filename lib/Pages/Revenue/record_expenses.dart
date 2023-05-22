@@ -226,6 +226,10 @@ class _RecordExpensesState extends State<RecordExpenses> {
                               borderSide: BorderSide(color: Colors.white),
                             ),
                           ),
+                          keyboardType: TextInputType.text,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(RegExp(r'\d+')),
+                          ],
                         ),
                       ),
                     ),
